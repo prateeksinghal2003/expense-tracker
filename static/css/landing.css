@@ -182,3 +182,61 @@
 .mock-cat-bar--food   { background: #c17f24; }
 .mock-cat-bar--travel { background: #5b7fa6; }
 .mock-cat-bar--bills  { background: #7c6bb0; }
+
+/* ------------------------------------------------------------------ */
+/* Video modal                                                         */
+/* ------------------------------------------------------------------ */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.modal-overlay.modal--open {
+    display: flex;
+}
+
+.modal-box {
+    position: relative;
+    background: var(--ink);
+    border-radius: var(--radius-lg);
+    width: 100%;
+    max-width: 780px;
+    overflow: hidden;
+}
+
+.modal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.9rem;
+    background: none;
+    border: none;
+    color: var(--paper);
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0.7;
+    transition: opacity 0.15s;
+}
+
+.modal-close:hover { opacity: 1; }
+
+.modal-video-wrap {
+    position: relative;
+    padding-top: 56.25%;
+}
+
+.modal-video-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
