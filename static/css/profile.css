@@ -1,0 +1,264 @@
+/* ------------------------------------------------------------------ */
+/* Profile page layout                                                 */
+/* ------------------------------------------------------------------ */
+
+.profile-page {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 2.5rem 2rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+}
+
+.profile-bottom {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.profile-section {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.75rem;
+}
+
+.section-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    color: var(--ink);
+    margin-bottom: 1.25rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* User info card                                                      */
+/* ------------------------------------------------------------------ */
+
+.profile-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.75rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.profile-avatar {
+    width: 64px;
+    height: 64px;
+    background: var(--accent);
+    color: var(--paper);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.profile-name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--ink);
+    line-height: 1.2;
+}
+
+.profile-email {
+    font-size: 0.9rem;
+    color: var(--ink-muted);
+    margin-top: 0.25rem;
+}
+
+.profile-since {
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    margin-top: 0.3rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Summary stats                                                       */
+/* ------------------------------------------------------------------ */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.stat-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.stat-label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.stat-value {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--ink);
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------ */
+/* Transaction table                                                   */
+/* ------------------------------------------------------------------ */
+
+.txn-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.txn-table th {
+    text-align: left;
+    font-size: 0.73rem;
+    font-weight: 600;
+    color: var(--ink-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 0 0.75rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.txn-table td {
+    padding: 0.875rem 0.75rem;
+    border-bottom: 1px solid var(--border-soft);
+    color: var(--ink-soft);
+    vertical-align: middle;
+}
+
+.txn-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.txn-table tbody tr:hover {
+    background: var(--paper-warm);
+}
+
+.col-amount {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    color: var(--ink);
+}
+
+.txn-date {
+    color: var(--ink-faint);
+    white-space: nowrap;
+    font-size: 0.85rem;
+}
+
+/* ------------------------------------------------------------------ */
+/* Category badges                                                     */
+/* ------------------------------------------------------------------ */
+
+.badge {
+    display: inline-block;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.73rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.badge--bills         { background: var(--accent-light);   color: var(--accent); }
+.badge--shopping      { background: var(--accent-2-light); color: var(--accent-2); }
+.badge--health        { background: #eaf0fb; color: #3b6fd4; }
+.badge--food          { background: #fef9ec; color: #b07a1a; }
+.badge--transport     { background: #f3f0fb; color: #6e52c0; }
+.badge--entertainment { background: #fdf0f8; color: #b0369e; }
+.badge--other         { background: var(--paper-warm); color: var(--ink-muted); }
+
+/* ------------------------------------------------------------------ */
+/* Category breakdown                                                  */
+/* ------------------------------------------------------------------ */
+
+.category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+}
+
+.category-row { }
+
+.category-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.35rem;
+}
+
+.category-name {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+}
+
+.category-amount {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.category-track {
+    height: 6px;
+    background: var(--border-soft);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.category-bar {
+    height: 100%;
+    border-radius: 999px;
+    width: var(--bar-w, 0%);
+    transition: width 0.4s ease;
+}
+
+.category-bar--bills         { background: var(--accent); }
+.category-bar--shopping      { background: var(--accent-2); }
+.category-bar--health        { background: #3b6fd4; }
+.category-bar--food          { background: #b07a1a; }
+.category-bar--transport     { background: #6e52c0; }
+.category-bar--entertainment { background: #b0369e; }
+.category-bar--other         { background: var(--ink-faint); }
+
+/* ------------------------------------------------------------------ */
+/* Responsive                                                          */
+/* ------------------------------------------------------------------ */
+
+@media (max-width: 900px) {
+    .profile-bottom {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-card {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .profile-page {
+        padding: 1.5rem 1rem 3rem;
+    }
+}
