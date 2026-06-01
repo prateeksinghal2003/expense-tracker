@@ -4,6 +4,7 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/filter-bar.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -17,6 +18,27 @@
             <p class="profile-email">{{ user.email }}</p>
             <p class="profile-since">Member since {{ user.member_since }}</p>
         </div>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar">
+        <div class="filter-presets">
+            <a href="{{ url_for('profile', preset='this_month') }}"
+               class="filter-preset-btn{% if active_preset == 'this_month' %} active{% endif %}">This Month</a>
+            <a href="{{ url_for('profile', preset='last_30') }}"
+               class="filter-preset-btn{% if active_preset == 'last_30' %} active{% endif %}">Last 30 Days</a>
+            <a href="{{ url_for('profile', preset='last_7') }}"
+               class="filter-preset-btn{% if active_preset == 'last_7' %} active{% endif %}">Last 7 Days</a>
+            <a href="{{ url_for('profile') }}"
+               class="filter-preset-btn{% if active_preset == 'all' %} active{% endif %}">All Time</a>
+        </div>
+        <form class="filter-custom" method="GET" action="{{ url_for('profile') }}">
+            <label class="filter-label" for="from">From</label>
+            <input class="form-input filter-date" type="date" id="from" name="from" value="{{ date_from }}">
+            <label class="filter-label" for="to">To</label>
+            <input class="form-input filter-date" type="date" id="to" name="to" value="{{ date_to }}">
+            <button class="btn-primary filter-apply" type="submit">Apply</button>
+        </form>
     </div>
 
     <!-- Summary stats -->

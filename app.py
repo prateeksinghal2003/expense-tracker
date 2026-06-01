@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from flask import Flask, render_template, request, session, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.db import get_db, init_db, seed_db
@@ -104,13 +105,43 @@ def profile():
     user = get_user_by_id(session["user_id"])
     if user is None:
         return redirect(url_for("login"))
-    stats        = get_summary_stats(session["user_id"])
-    transactions = get_recent_transactions(session["user_id"])
-    categories   = get_category_breakdown(session["user_id"])
+
+    today    = date.today()
+    preset   = request.args.get("preset", "all")
+    from_raw = request.args.get("from", "")
+    to_raw   = request.args.get("to", "")
+
+    date_from     = None
+    date_to       = None
+    active_preset = preset
+
+    try:
+        if from_raw and to_raw:
+            date_from     = str(date.fromisoformat(from_raw))
+            date_to       = str(date.fromisoformat(to_raw))
+            active_preset = "custom"
+        elif preset == "this_month":
+            date_from = today.replace(day=1).isoformat()
+            date_to   = today.isoformat()
+        elif preset == "last_30":
+            date_from = (today - timedelta(days=30)).isoformat()
+            date_to   = today.isoformat()
+        elif preset == "last_7":
+            date_from = (today - timedelta(days=7)).isoformat()
+            date_to   = today.isoformat()
+    except ValueError:
+        active_preset = "all"
+
+    stats        = get_summary_stats(session["user_id"], date_from, date_to)
+    transactions = get_recent_transactions(session["user_id"], date_from=date_from, date_to=date_to)
+    categories   = get_category_breakdown(session["user_id"], date_from, date_to)
     return render_template(
         "profile.html",
         user=user, stats=stats,
         transactions=transactions, categories=categories,
+        active_preset=active_preset,
+        date_from=date_from or "",
+        date_to=date_to or "",
     )
 
 

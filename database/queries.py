@@ -21,15 +21,20 @@ def get_user_by_id(user_id):
     }
 
 
-def get_summary_stats(user_id):
+def get_summary_stats(user_id, date_from=None, date_to=None):
     conn = get_db()
+    where = "user_id = ?"
+    params = [user_id]
+    if date_from and date_to:
+        where += " AND date BETWEEN ? AND ?"
+        params += [date_from, date_to]
     agg = conn.execute(
-        "SELECT SUM(amount), COUNT(*) FROM expenses WHERE user_id = ?", (user_id,)
+        f"SELECT SUM(amount), COUNT(*) FROM expenses WHERE {where}", params
     ).fetchone()
     top = conn.execute(
-        "SELECT category FROM expenses WHERE user_id = ? "
+        f"SELECT category FROM expenses WHERE {where} "
         "GROUP BY category ORDER BY SUM(amount) DESC LIMIT 1",
-        (user_id,),
+        params,
     ).fetchone()
     conn.close()
     total = agg[0] or 0.0
@@ -40,12 +45,18 @@ def get_summary_stats(user_id):
     }
 
 
-def get_recent_transactions(user_id, limit=10):
+def get_recent_transactions(user_id, limit=10, date_from=None, date_to=None):
     conn = get_db()
+    where = "user_id = ?"
+    params = [user_id]
+    if date_from and date_to:
+        where += " AND date BETWEEN ? AND ?"
+        params += [date_from, date_to]
+    params.append(limit)
     rows = conn.execute(
-        "SELECT date, description, category, amount "
-        "FROM expenses WHERE user_id = ? ORDER BY date DESC LIMIT ?",
-        (user_id, limit),
+        f"SELECT date, description, category, amount "
+        f"FROM expenses WHERE {where} ORDER BY date DESC LIMIT ?",
+        params,
     ).fetchall()
     conn.close()
     return [
@@ -59,12 +70,17 @@ def get_recent_transactions(user_id, limit=10):
     ]
 
 
-def get_category_breakdown(user_id):
+def get_category_breakdown(user_id, date_from=None, date_to=None):
     conn = get_db()
+    where = "user_id = ?"
+    params = [user_id]
+    if date_from and date_to:
+        where += " AND date BETWEEN ? AND ?"
+        params += [date_from, date_to]
     rows = conn.execute(
-        "SELECT category, SUM(amount) as total "
-        "FROM expenses WHERE user_id = ? GROUP BY category ORDER BY total DESC",
-        (user_id,),
+        f"SELECT category, SUM(amount) as total "
+        f"FROM expenses WHERE {where} GROUP BY category ORDER BY total DESC",
+        params,
     ).fetchall()
     conn.close()
     if not rows:
