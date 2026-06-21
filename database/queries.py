@@ -97,3 +97,14 @@ def get_category_breakdown(user_id, date_from=None, date_to=None):
     diff = 100 - sum(c["percent"] for c in result)
     result[0]["percent"] += diff
     return result
+
+
+def add_expense(user_id, amount, category, date, description):
+    conn = get_db()
+    conn.execute(
+        "INSERT INTO expenses (user_id, amount, category, date, description) "
+        "VALUES (?, ?, ?, ?, ?)",
+        (user_id, amount, category, date, description or None),
+    )
+    conn.commit()
+    conn.close()

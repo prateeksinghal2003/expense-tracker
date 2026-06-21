@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Analytics — Spendly{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/analytics.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="analytics-soon">
+    <div class="soon-card">
+
+        <div class="soon-icon-wrap">
+            <i data-lucide="clock"></i>
+        </div>
+
+        <span class="soon-badge">COMING SOON</span>
+
+        <h1 class="soon-title">Advanced Analytics</h1>
+
+        <p class="soon-desc">
+            We're working on powerful insights and visualizations to help you
+            understand your spending patterns better.
+        </p>
+
+        <div class="soon-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <p class="soon-footer">We're crafting something special</p>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>lucide.createIcons();</script>
+{% endblock %}
