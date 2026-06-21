@@ -1,14 +1,17 @@
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 from flask import Flask, render_template, request, session, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from database.db import get_db, init_db, seed_db
 from database.queries import (
     get_user_by_id, get_summary_stats,
     get_recent_transactions, get_category_breakdown,
+    add_expense,
 )
 
 app = Flask(__name__)
 app.secret_key = "spendly-dev-secret"
+
+CATEGORIES = ["Food", "Transport", "Bills", "Health", "Entertainment", "Shopping", "Other"]
 
 with app.app_context():
     init_db()
@@ -152,9 +155,52 @@ def analytics():
     return render_template("analytics.html")
 
 
-@app.route("/expenses/add")
-def add_expense():
-    return "Add expense — coming in Step 7"
+@app.route("/expenses/add", methods=["GET", "POST"])
+def add_expense_route():
+    if not session.get("user_id"):
+        return redirect(url_for("login"))
+
+    if request.method == "GET":
+        return render_template("add_expense.html",
+                               categories=CATEGORIES,
+                               today=date.today().isoformat())
+
+    amount_raw  = request.form.get("amount", "").strip()
+    category    = request.form.get("category", "").strip()
+    date_raw    = request.form.get("date", "").strip()
+    description = request.form.get("description", "").strip()
+
+    error        = None
+    amount       = None
+    expense_date = None
+
+    try:
+        amount = float(amount_raw)
+        if amount <= 0:
+            error = "Amount must be greater than zero."
+    except ValueError:
+        error = "Please enter a valid amount."
+
+    if not error and category not in CATEGORIES:
+        error = "Please select a valid category."
+
+    if not error:
+        try:
+            expense_date = datetime.strptime(date_raw, "%Y-%m-%d").date().isoformat()
+        except ValueError:
+            error = "Please enter a valid date."
+
+    if error:
+        return render_template("add_expense.html",
+                               categories=CATEGORIES,
+                               error=error,
+                               amount=amount_raw,
+                               category=category,
+                               date=date_raw,
+                               description=description)
+
+    add_expense(session["user_id"], amount, category, expense_date, description)
+    return redirect(url_for("profile"))
 
 
 @app.route("/expenses/<int:id>/edit")
